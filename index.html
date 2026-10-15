@@ -652,6 +652,29 @@ table.ha-table td:first-child{white-space:normal;font-weight:700}
 </style>
 <style id="v11-style">
 .snow-note{background:#e0f2fe;color:#075985;border:1px solid #b6dcf2}
+.snow-note.hidden{display:none!important}   /* the chip's own display rule must not override "hidden" */
+</style>
+<style id="v13-style">
+.timeline-location:empty{display:none}
+.timeline-location strong{color:#14303b}
+#timelineLocationShort{font-weight:600;color:#0d5f64}
+.viewer-host{display:none}
+body.viewer .viewer-host{display:block}
+body.viewer .wrap>.print-heading,body.viewer .wrap>#settingsPanel,body.viewer .wrap>#timelinePanel,body.viewer .wrap>.chart-mode-bar,body.viewer .wrap>#plot,body.viewer .wrap>#zoneDesc{display:none!important}
+body.viewer .status-actions button:first-child{display:none}
+body.viewer .viewer-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0}
+body.viewer .viewer-bar .hint{display:block!important;flex:1 1 260px;margin:0;text-indent:0}
+body.viewer .viewer-bar button{width:auto}
+body.viewer #viewerContent .modal-box{position:static;max-width:none;width:auto;max-height:none;overflow:visible;box-shadow:none;border:1px solid var(--border);border-radius:16px;margin:0;padding:20px 22px}
+body.viewer #viewerContent .modal-close{display:none}
+body.viewer #viewerContent .modal-box:focus{outline:none}
+@media print{
+ body.viewer .app-header{display:flex!important}
+ body.viewer .header-controls{display:none!important}
+ body.viewer #statusBar{display:flex!important;box-shadow:none}
+ body.viewer .status-actions,body.viewer .info-dot,body.viewer .viewer-bar{display:none!important}
+ body.viewer #viewerContent .modal-box{border:0;padding:0}
+}
 </style>
 </head>
 <body>
@@ -749,7 +772,8 @@ table.ha-table td:first-child{white-space:normal;font-weight:700}
 </div>
 <div class="status-footer"><div class="updated-wrap"><span id="lastUpdated">—</span><button type="button" class="info-dot" aria-label="Data sources for this reading" onclick="openDataSources()">i</button></div>
 <div class="action-toolbar status-actions"><button class="primary" onclick="fetchAndPlot()">Refresh Now</button><button class="primary" onclick="openRecommendedActions()">Recommended actions</button><button class="primary" onclick="openDetailedAdvisory()">Detailed health advisory</button></div></div>
-</div><details class="context-panel timeline-panel" id="timelinePanel"><summary>Hourly risk timeline · next 12 hours</summary><p class="hint" id="timelineStatus">Choose a live location to view the next 12 hours.</p><div class="timeline-grid" id="timelineGrid"></div><p class="hint">Categories describe separate hazards; forecasts are not a guarantee of safe outdoor conditions. Manual and selected historical/future readings do not populate this timeline.</p></details>
+</div><div class="viewer-host" id="viewerHost"><div class="viewer-bar"><span class="hint" id="viewerNote"></span><button type="button" class="secondary" onclick="window.print()">Print / Save PDF</button><button type="button" class="secondary" onclick="window.close()">Close window</button></div><div id="viewerContent"></div></div>
+<details class="context-panel timeline-panel" id="timelinePanel"><summary>Hourly risk timeline · next 12 hours<span id="timelineLocationShort"></span></summary><p class="hint timeline-location" id="timelineLocationLine"></p><p class="hint" id="timelineStatus">Choose a live location to view the next 12 hours.</p><div class="timeline-grid" id="timelineGrid"></div><p class="hint">Categories describe separate hazards; forecasts are not a guarantee of safe outdoor conditions. Manual and selected historical/future readings do not populate this timeline.</p></details>
 <div class="chart-mode-bar">
 <label for="chartMode">Chart view</label>
 <select id="chartMode" onchange="onChartModeChange()">
@@ -856,6 +880,7 @@ Object.assign(HINDI,{"Refresh required": "अपडेट आवश्यक", "
 Object.assign(HINDI,{"Altitude self-check": "ऊँचाई स्व-जाँच", "Open the altitude self-check": "ऊँचाई स्व-जाँच खोलें", "A quick check for acute altitude illness using the 2018 Lake Louise AMS score and the Lake Louise criteria for HACE and HAPE. It supports, and does not replace, assessment by a medical officer. Nothing you enter is saved or sent anywhere.": "तीव्र ऊँचाई की बीमारी की त्वरित जाँच, 2018 के Lake Louise AMS स्कोर तथा HACE और HAPE के Lake Louise मानदंडों के आधार पर। यह चिकित्सा अधिकारी के आकलन में सहायक है, उसका विकल्प नहीं। आप जो भी दर्ज करेंगे वह कहीं सहेजा या भेजा नहीं जाता।", "If anyone is confused, cannot walk straight or is breathless at rest, do not wait: start descent and call the medical officer.": "यदि कोई व्यक्ति भ्रमित हो, सीधा न चल पाए या आराम में भी साँस फूलती हो, तो प्रतीक्षा न करें: नीचे उतरना शुरू करें और चिकित्सा अधिकारी को बुलाएँ।", "1. Recent ascent": "1. हाल की चढ़ाई", "Have you gained altitude recently (for example, in the last few days)?": "क्या आपने हाल में (जैसे पिछले कुछ दिनों में) ऊँचाई प्राप्त की है?", "Yes — recent gain in altitude": "हाँ — हाल में ऊँचाई बढ़ी है", "No recent gain in altitude": "नहीं — हाल में ऊँचाई नहीं बढ़ी", "Altitude now (metres, optional)": "अभी की ऊँचाई (मीटर, वैकल्पिक)", "2. Lake Louise AMS score": "2. Lake Louise AMS स्कोर", "Choose the option that best describes how you feel now (0 = none).": "वह विकल्प चुनें जो अभी आपकी स्थिति को सबसे अच्छी तरह बताता हो (0 = कुछ नहीं)।", "3. Emergency checks": "3. आपात जाँच", "HACE warning signs (ask a companion to check)": "HACE के चेतावनी संकेत (साथी से जँचवाएँ)", "Confusion, drowsiness or unusual behaviour": "भ्रम, उनींदापन या असामान्य व्यवहार", "Loss of balance or coordination: cannot walk heel-to-toe along a straight line": "संतुलन या समन्वय की हानि: सीधी रेखा पर एड़ी से पंजे तक मिलाकर नहीं चल पाते", "HAPE warning signs": "HAPE के चेतावनी संकेत", "Crackles or wheeze are usually heard by a companion or the medical officer.": "चरमराहट या घरघराहट आम तौर पर साथी या चिकित्सा अधिकारी को सुनाई देती है।", "Answer the questions to see the result.": "परिणाम देखने के लिए प्रश्नों के उत्तर दें।", "First say whether you have gained altitude recently.": "पहले बताएँ कि क्या आपने हाल में ऊँचाई प्राप्त की है।", "Answer all four symptom questions (choose 0 if none).": "चारों लक्षण-प्रश्नों के उत्तर दें (कुछ नहीं हो तो 0 चुनें)।", "This check supports, and never replaces, medical assessment. When in doubt, descend and seek medical help.": "यह जाँच चिकित्सकीय आकलन में सहायक है, उसका विकल्प कभी नहीं। संदेह हो तो नीचे उतरें और चिकित्सा सहायता लें।", "Copy summary for the medical officer": "चिकित्सा अधिकारी के लिए सारांश कॉपी करें", "Start again": "फिर से शुरू करें", "Summary copied.": "सारांश कॉपी हो गया।", "Copying is not available here; select and copy the text below.": "यहाँ कॉपी करना उपलब्ध नहीं है; नीचे का पाठ चुनकर कॉपी करें।", "Lake Louise AMS score": "Lake Louise AMS स्कोर", "AMS (headache plus a total of 3 or more)": "AMS (सिरदर्द के साथ कुल 3 या अधिक अंक)", "HACE criteria": "HACE के मानदंड", "HAPE criteria": "HAPE के मानदंड", "Present — mild (suggested band 3–5)": "उपस्थित — हल्का (सुझाया दायरा 3–5)", "Present — moderate (suggested band 6–9)": "उपस्थित — मध्यम (सुझाया दायरा 6–9)", "Present — severe (suggested band 10–12)": "उपस्थित — गंभीर (सुझाया दायरा 10–12)", "Not present": "उपस्थित नहीं", "Not assessed (no recent ascent)": "आकलन नहीं (हाल में चढ़ाई नहीं)", "Criteria met": "मानदंड पूरे", "Possible features — treat as urgent": "संभावित लक्षण — तत्काल मानें", "Not suggested by your answers": "आपके उत्तरों से संकेत नहीं", "Emergency: start descent now": "आपात स्थिति: अभी नीचे उतरना शुरू करें", "Start descent now, with an escort. For HACE or HAPE use an assisted or carried descent.": "तुरंत किसी साथी के साथ नीचे उतरना शुरू करें। HACE या HAPE में सहायता सहित या उठाकर उतारें।", "Inform the medical officer immediately.": "चिकित्सा अधिकारी को तुरंत सूचित करें।", "Give oxygen if available while arranging descent.": "यदि उपलब्ध हो तो नीचे उतारने की व्यवस्था करते समय ऑक्सीजन दें।", "Do not leave the person alone. Keep warm; avoid exertion, alcohol and sedatives.": "व्यक्ति को अकेला न छोड़ें। गर्म रखें; परिश्रम, शराब और नींद की दवाओं से बचें।", "Do not delay descent for medicines or to see whether symptoms improve.": "दवाओं के लिए या यह देखने के लिए कि लक्षण सुधरते हैं या नहीं, नीचे उतरना न टालें।", "Urgent: medical review needed": "तत्काल: चिकित्सकीय जाँच आवश्यक", "Stop ascending and rest; do not go higher.": "और ऊपर न चढ़ें और आराम करें; ऊँचाई न बढ़ाएँ।", "Inform the medical officer for review today.": "आज ही जाँच के लिए चिकित्सा अधिकारी को सूचित करें।", "Descend if there is no clear improvement within a few hours or if symptoms get worse.": "कुछ घंटों में स्पष्ट सुधार न हो या लक्षण बढ़ें तो नीचे उतरें।", "Keep warm, drink fluids and avoid alcohol and exertion.": "गर्म रहें, तरल लें और शराब व परिश्रम से बचें।", "Repeat this check every few hours.": "हर कुछ घंटों में यह जाँच दोहराएँ।", "Mild AMS: stop ascending and rest": "हल्का AMS: और ऊपर न चढ़ें और आराम करें", "Stop ascending and rest at the same altitude.": "और ऊपर न चढ़ें और उसी ऊँचाई पर आराम करें।", "Drink fluids, keep warm, avoid alcohol and heavy exertion.": "तरल लें, गर्म रहें, शराब और भारी परिश्रम से बचें।", "Do not go higher until all symptoms have gone; descend if they persist or worsen.": "जब तक सभी लक्षण समाप्त न हों, ऊपर न जाएँ; लक्षण बने रहें या बढ़ें तो नीचे उतरें।", "Tell a companion or the medical officer, and repeat this check in a few hours.": "किसी साथी या चिकित्सा अधिकारी को बताएँ, और कुछ घंटों में यह जाँच दोहराएँ।", "No AMS by the Lake Louise criteria": "Lake Louise मानदंड के अनुसार AMS नहीं", "Continue to follow the gradual ascent and acclimatisation advice.": "क्रमिक चढ़ाई और अनुकूलन की सलाह का पालन करते रहें।", "Symptoms can appear later, especially in the first nights; repeat this check if you feel unwell.": "लक्षण बाद में, विशेषकर पहली रातों में, उभर सकते हैं; अस्वस्थ लगे तो यह जाँच दोहराएँ।", "Lake Louise AMS score not applicable": "Lake Louise AMS स्कोर लागू नहीं", "The AMS score applies after a recent gain in altitude. If you feel unwell, seek medical advice.": "AMS स्कोर ऊँचाई में हाल की वृद्धि के बाद लागू होता है। अस्वस्थ लगे तो चिकित्सकीय सलाह लें।", "Repeat this check after any further gain in altitude.": "ऊँचाई और बढ़ने पर यह जाँच दोहराएँ।"});
 Object.assign(HINDI,{"Keep typing: at least 3 letters.": "लिखते रहें: कम से कम 3 अक्षर।", "Try the first letters of the main place name, a nearby city, or use Manual coordinates.": "मुख्य स्थान के नाम के पहले अक्षर या किसी पास के शहर का नाम आज़माएँ, या “अक्षांश और देशांतर दर्ज करें” का उपयोग करें।", "No exact match for the extra words; showing places with the main name.": "अतिरिक्त शब्दों से सटीक मिलान नहीं मिला; मुख्य नाम वाले स्थान दिखाए जा रहे हैं।", "Showing the first 12. Type more letters or add the district to narrow the list.": "पहले 12 दिखाए गए हैं। सूची छोटी करने के लिए और अक्षर लिखें या ज़िला जोड़ें।", "Population": "जनसंख्या", "Location suggestions": "स्थान सुझाव", "Capital city": "राजधानी शहर", "State capital": "राज्य की राजधानी", "District headquarters": "जिला मुख्यालय", "Sub-district headquarters": "उप-जिला मुख्यालय", "Town or village": "कस्बा या गाँव", "Locality": "क्षेत्र", "Administrative centre": "प्रशासनिक केंद्र", "State or region": "राज्य या क्षेत्र", "District": "जिला", "Sub-district": "उप-जिला", "Airport": "हवाई अड्डा", "Air base": "वायुसेना अड्डा", "Type the first letters of the place name (at least 3), then pick one from the list. Places that share a name are shown with their district and state.": "स्थान के नाम के पहले अक्षर लिखें (कम से कम 3), फिर सूची में से चुनें। एक ही नाम वाले स्थान उनके ज़िले और राज्य के साथ दिखाए जाते हैं।"});
 Object.assign(HINDI,{"Snowfall, snow depth and weather codes come from the Open-Meteo weather model for the location. Snow is treated as present on the ground from about 2 cm of modelled depth, and as falling when the model gives snowfall of 0.1 cm per hour or more, or a snow weather code. Fresh snow can reflect up to about 80% of UV radiation (some sources give up to 90%); the displayed UV Index is not adjusted for this, and a note is shown instead. Modelled snow is a coarse indicator, and avalanche risk is not assessed.": "बर्फबारी, बर्फ की गहराई और मौसम कोड उस स्थान के लिए Open-Meteo मौसम मॉडल से आते हैं। मॉडल की लगभग 2 सेमी गहराई से ज़मीन पर बर्फ मानी जाती है, और मॉडल द्वारा 0.1 सेमी प्रति घंटा या अधिक बर्फबारी, या बर्फ का मौसम कोड मिलने पर बर्फबारी मानी जाती है। ताज़ी बर्फ UV विकिरण का लगभग 80% तक (कुछ स्रोतों में 90% तक) परावर्तित कर सकती है; दिखाया गया UV सूचकांक इसके अनुसार बदला नहीं जाता, उसके स्थान पर एक टिप्पणी दिखाई जाती है। मॉडल की बर्फ एक मोटा संकेतक है, और हिमस्खलन का जोखिम आँका नहीं जाता।", "Snow": "बर्फ", "Snowing": "बर्फबारी हो रही है", "Snow expected": "बर्फबारी की संभावना", "Model estimate for this location; local snow can differ greatly.": "इस स्थान के लिए मॉडल अनुमान; स्थानीय बर्फ की स्थिति काफ़ी भिन्न हो सकती है।", "Snow reflects UV": "बर्फ UV परावर्तित करती है", "Fresh snow can reflect up to about 80% of UV radiation; wear UV-protective goggles and protect the face.": "ताज़ी बर्फ UV विकिरण का लगभग 80% तक परावर्तित कर सकती है; UV-रोधी गॉगल्स पहनें और चेहरे की रक्षा करें।", "Wear UV-protective goggles or sunglasses with side shields on snow; fresh snow reflects much of the sun’s UV and unprotected eyes can suffer snow blindness.": "बर्फ पर UV-रोधी गॉगल्स या किनारों से ढके धूप के चश्मे पहनें; ताज़ी बर्फ सूर्य की UV का बड़ा भाग परावर्तित करती है और असुरक्षित आँखों में हिम-अंधता हो सकती है।", "Apply sunscreen to the face, including under the chin and nose, and protect the lips.": "चेहरे पर, ठोड़ी के नीचे और नाक सहित, सनस्क्रीन लगाएँ और होंठों की रक्षा करें।", "Use waterproof outer layers and gaiters in wet snow or slush, and change wet socks and gloves promptly.": "गीली बर्फ या कीचड़-बर्फ में जलरोधी बाहरी परत और गेटर पहनें, और गीले मोज़े व दस्ताने तुरंत बदलें।", "Use shade where possible, covering clothing and a broad-brimmed hat.": "जहाँ संभव हो छाया में रहें, ढकने वाले कपड़े और चौड़ी किनारी वाली टोपी पहनें।", "Brush snow off clothing and boots before entering a heated shelter so it does not melt and soak them.": "गर्म आश्रय में जाने से पहले कपड़ों और जूतों से बर्फ झाड़ दें ताकि वह पिघलकर उन्हें गीला न करे।", "Keep exhaust pipes, stove flues and shelter vents clear of snow, and never run engines or stoves in a closed shelter.": "निकास पाइप, चूल्हे की चिमनी और आश्रय के वेंट बर्फ से साफ़ रखें, और बंद आश्रय में कभी इंजन या चूल्हा न चलाएँ।", "Postpone non-essential movement in heavy snowfall or whiteout; keep to marked routes and move in pairs.": "भारी बर्फबारी या व्हाइटआउट में गैर-ज़रूरी आवाजाही टालें; चिह्नित मार्गों पर रहें और जोड़ी में चलें।", "Pace snow clearing and movement through deep snow, with regular rest breaks, especially at altitude.": "बर्फ हटाने और गहरी बर्फ में चलने की गति संतुलित रखें, नियमित विश्राम लें, विशेषकर ऊँचाई पर।", "Snow is expected in the next 12 hours: prepare dry layers and UV-protective goggles, and keep access routes and vents clear.": "अगले 12 घंटों में बर्फबारी की संभावना है: सूखी परतें और UV-रोधी गॉगल्स तैयार रखें, तथा रास्ते और वेंट साफ़ रखें।", "Snowing now": "अभी बर्फबारी हो रही है", "Snow on the ground": "ज़मीन पर बर्फ", "Snow expected in the next 12 hours": "अगले 12 घंटों में बर्फबारी की संभावना", "Model estimate for this location": "इस स्थान के लिए मॉडल अनुमान", "Eyes and skin: fresh snow reflects up to about 80% of UV radiation, so exposure is higher than the UV Index alone suggests. Wear UV-protective goggles or sunglasses with side shields, and protect the face, nose, lips and the skin under the chin. Snow blindness makes the eyes painful, gritty and sensitive to light: cover them, rest in shade or darkness and seek medical advice.": "आँखें और त्वचा: ताज़ी बर्फ UV विकिरण का लगभग 80% तक परावर्तित करती है, इसलिए जोखिम केवल UV सूचकांक से अधिक होता है। UV-रोधी गॉगल्स या किनारों से ढके धूप के चश्मे पहनें, और चेहरे, नाक, होंठों तथा ठोड़ी के नीचे की त्वचा की रक्षा करें। हिम-अंधता में आँखें दर्द करती हैं, किरकिरी लगती हैं और रोशनी से चुभती हैं: उन्हें ढकें, छाया या अँधेरे में आराम करें और चिकित्सकीय सलाह लें।", "Wet cold: wet snow and slush soak clothing and boots and raise the risk of cold injury, including non-freezing cold injury (trench foot). Use waterproof outer layers, change wet socks and gloves promptly and dry footwear when you can.": "गीली ठंड: गीली बर्फ और कीचड़-बर्फ कपड़ों और जूतों को भिगो देती है और ठंड से चोट का जोखिम बढ़ाती है, जिसमें गैर-हिमकारी शीत-चोट (ट्रेंच फुट) भी शामिल है। जलरोधी बाहरी परतें पहनें, गीले मोज़े और दस्ताने तुरंत बदलें और संभव हो तो जूते सुखाएँ।", "Shelters and vehicles: snow can block exhaust pipes, stove flues and vents. Keep them clear and never run engines or stoves in a closed shelter; carbon monoxide gives little warning.": "आश्रय और वाहन: बर्फ निकास पाइप, चूल्हे की चिमनी और वेंट को बंद कर सकती है। उन्हें साफ़ रखें और बंद आश्रय में कभी इंजन या चूल्हा न चलाएँ; कार्बन मोनोऑक्साइड बहुत कम चेतावनी देती है।", "Movement and visibility: heavy snowfall and whiteout raise the risk of falls, getting lost and vehicle accidents. Postpone non-essential movement, keep to marked routes and move in pairs.": "आवाजाही और दृश्यता: भारी बर्फबारी और व्हाइटआउट से गिरने, रास्ता भटकने और वाहन दुर्घटना का जोखिम बढ़ता है। गैर-ज़रूरी आवाजाही टालें, चिह्नित मार्गों पर रहें और जोड़ी में चलें।", "Effort: clearing snow or walking through deep snow is heavy exertion, especially at altitude. Pace the work and take regular rest breaks.": "परिश्रम: बर्फ हटाना या गहरी बर्फ में चलना भारी परिश्रम है, विशेषकर ऊँचाई पर। काम की गति संतुलित रखें और नियमित विश्राम लें।", "Snow is expected within 12 hours. Prepare dry layers, UV-protective goggles and clear access routes, and check that vents and exhausts are free of snow.": "अगले 12 घंटों में बर्फबारी की संभावना है। सूखी परतें, UV-रोधी गॉगल्स तैयार रखें, रास्ते साफ़ रखें और जाँचें कि वेंट व निकास बर्फ से मुक्त हैं।", "Snow figures are model estimates on a coarse grid and can differ greatly at a specific post; confirm with local observation. Avalanche risk is not assessed here: follow official avalanche bulletins and local orders.": "बर्फ के आँकड़े मोटे ग्रिड पर मॉडल अनुमान हैं और किसी विशेष चौकी पर काफ़ी भिन्न हो सकते हैं; स्थानीय अवलोकन से पुष्टि करें। हिमस्खलन का जोखिम यहाँ आँका नहीं जाता: आधिकारिक हिमस्खलन बुलेटिन और स्थानीय आदेशों का पालन करें।", "Snow on the ground reflects much of the UV, so protection needs are higher than the UV Index alone suggests.": "ज़मीन पर पड़ी बर्फ UV का बड़ा भाग परावर्तित करती है, इसलिए सुरक्षा की आवश्यकता केवल UV सूचकांक से सुझाई गई से अधिक है।", "Open-Meteo weather model (coarse grid; an indicator only)": "Open-Meteo मौसम मॉडल (मोटा ग्रिड; केवल संकेतक)", "Open-Meteo weather model (station has no snow sensor)": "Open-Meteo मौसम मॉडल (स्टेशन में बर्फ सेंसर नहीं है)"});
+Object.assign(HINDI,{"Forecast location": "पूर्वानुमान का स्थान", "Readings are as they were when this window was opened; use the dashboard window to refresh.": "रीडिंग वही हैं जो इस विंडो को खोलते समय थीं; ताज़ा करने के लिए डैशबोर्ड विंडो का उपयोग करें।", "Open this window from the dashboard to see the current readings here. The study material below is still available.": "वर्तमान रीडिंग यहाँ देखने के लिए इस विंडो को डैशबोर्ड से खोलें। नीचे दी गई अध्ययन सामग्री फिर भी उपलब्ध है।", "Close window": "विंडो बंद करें"});
 let uiLanguage='en';
 const translationNodes=new WeakMap();
 const translationAttrs=new WeakMap();
@@ -892,7 +917,7 @@ function translatePage(){
   for(const attr of ['placeholder','title','aria-label']){if(!el.hasAttribute(attr))continue;const raw=el.getAttribute(attr);if(!rec[attr]||(raw!==rec[attr].en&&raw!==rec[attr].hi))rec[attr]={en:raw,hi:hindiText(raw)};const value=uiLanguage==='hi'?rec[attr].hi:rec[attr].en;if(raw!==value)el.setAttribute(attr,value);}translationAttrs.set(el,rec);
  }
  document.documentElement.lang=uiLanguage;
- document.title=uiLanguage==='hi'?'EnviShield — पर्यावरणीय तनाव निर्णय सहायक':'EnviShield — Environmental Stress Decision Aid';
+ if(typeof VIEWER!=='undefined'&&VIEWER&&viewerCurrent){const vt=viewerCurrent.box.querySelector('h2');document.title=(vt?vt.textContent:'EnviShield')+' — EnviShield';}else document.title=uiLanguage==='hi'?'EnviShield — पर्यावरणीय तनाव निर्णय सहायक':'EnviShield — Environmental Stress Decision Aid';
  languageObserver?.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['title','placeholder','aria-label']});
 }
 function setLanguage(language){uiLanguage=language==='hi'?'hi':'en';updateFreshness();try{localStorage.setItem('uiLanguage',uiLanguage);}catch(e){}document.getElementById('languageSelect').value=uiLanguage;translatePage();renderTimeline();translatePage();renderPlot(lastHistory);}
@@ -902,6 +927,7 @@ function initLanguage(){let saved=null;try{saved=localStorage.getItem('uiLanguag
 let hourlyOutlook = [];
 let hourlyAQI = [];
 let outlookZone = '';
+let outlookLocation = '';
 let weatherContext = null;
 let weatherRequestId = 0;
 function ageLabel(date){const minutes=Math.max(0,Math.floor((Date.now()-new Date(date).getTime())/60000));return minutes<1?'just now':minutes<60?`${minutes} min ago`:`${Math.floor(minutes/60)} h ${minutes%60} min ago`;}
@@ -962,13 +988,15 @@ function renderActionContent(){
  const foot=document.createElement('p');foot.className='hint';foot.textContent='These points are general. Individual needs, garment insulation, wetness and activity affect protection; the app does not establish an exact clothing requirement or a safe exposure time.';body.append(foot);
 }
 function openRecommendedActions(){renderActionContent();openInfoModal('actionsModal');}
-function resetOutlook(message='Choose a live location to view the next 12 hours.') {hourlyOutlook=[];hourlyAQI=[];document.getElementById('timelineStatus').textContent=message;document.getElementById('timelineGrid').replaceChildren();}
+function setTimelineLocation(){const short=document.getElementById('timelineLocationShort'),line=document.getElementById('timelineLocationLine');if(!short||!line)return;if(!outlookLocation||!hourlyOutlook.length){short.textContent='';line.replaceChildren();return;}short.textContent=' · '+outlookLocation;const l=document.createElement('span');l.textContent='Forecast location';const b=document.createElement('strong');b.textContent=outlookLocation;line.replaceChildren(l,document.createTextNode(': '),b);}
+function resetOutlook(message='Choose a live location to view the next 12 hours.') {hourlyOutlook=[];hourlyAQI=[];outlookLocation='';setTimelineLocation();document.getElementById('timelineStatus').textContent=message;document.getElementById('timelineGrid').replaceChildren();}
 function outlookFromWeather(d){
  const h=d.hourly||{};const current=Date.parse(d.current.time+'Z')-Number(d.utc_offset_seconds||0)*1000;
  return (h.time||[]).map((local,i)=>{const time=Date.parse(local+'Z')-Number(d.utc_offset_seconds||0)*1000;const val=k=>Number.isFinite(h[k]?.[i])?h[k][i]:null;return {time,temp_c:val('temperature_2m'),rh:val('relative_humidity_2m'),wind_kmh:val('wind_speed_10m'),uv:val('uv_index'),snow:val('snowfall'),code:val('weather_code'),depth:val('snow_depth')};}).filter(r=>r.time>=current).slice(0,12);
 }
 function renderTimeline(){
  const grid=document.getElementById('timelineGrid');grid.replaceChildren();if(!hourlyOutlook.length)return;
+ setTimelineLocation();
  document.getElementById('timelineStatus').textContent=`Next ${hourlyOutlook.length} hours · model forecast · ${outlookZone||'local time'} · air quality is an estimated Indian AQI`;
  for(const r of hourlyOutlook){
   const card=document.createElement('article');card.className='hour-card';const h=document.createElement('h3');h.textContent=new Date(r.time).toLocaleString(uiLanguage==='hi'?'hi-IN':'en-GB', {timeZone:outlookZone||undefined,weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});card.append(h);
@@ -1097,8 +1125,15 @@ function renderLiveDashboard(mode) {
  if (ps) ps.textContent = `${latestDashboardLabel} — ${metrics.filter(m => finite(m.value)).map(m => `${m.label} ${m.text}`).join(' · ')} — ${chip.textContent}`;
 }
 let infoReturnFocus=null;
-function openInfoModal(id){infoReturnFocus=document.activeElement;const el=document.getElementById(id);el.classList.remove('hidden');document.body.style.overflow='hidden';el.querySelector('.modal-close').focus();}
-function closeInfoModal(id){document.getElementById(id).classList.add('hidden');document.body.style.overflow='';infoReturnFocus?.focus();}
+// Advice and study material open in a separate information window (the same page in a read-only "viewer" mode) with the
+// Environmental overview at the top. Small pop-ups such as the data-sources table stay in the page. If the browser blocks
+// the new window, the content opens as an in-page panel instead, so it is never lost.
+function openInfoModal(id){
+  if (DOC_MODALS.has(id)) { if (VIEWER) { viewerShow(id); return; } if (openViewerWindow(id)) return; }
+  openInfoModalInPage(id);
+}
+function openInfoModalInPage(id){infoReturnFocus=document.activeElement;const el=document.getElementById(id);el.classList.remove('hidden');document.body.style.overflow='hidden';el.querySelector('.modal-close').focus();}
+function closeInfoModal(id){if(DOC_MODALS.has(id)&&(VIEWER||document.getElementById(id).classList.contains('hidden')))return;document.getElementById(id).classList.add('hidden');document.body.style.overflow='';infoReturnFocus?.focus();}
 for(const id of ['referencesModal','altitudeModal','actionsModal','heatIndexModal','coldIndexModal','aqiScaleModal','uvScaleModal','detailedModal','dataSourcesModal','altitudeCheckModal']) document.getElementById(id).addEventListener('click',e=>{if(e.target.id===id)closeInfoModal(id);});
 document.addEventListener('keydown',e=>{
  const active=document.querySelector('.modal-overlay:not(.hidden)');if(!active)return;
@@ -2378,7 +2413,7 @@ async function fetchAndPlot() {
     if(aqiCoords)setPinCandidate({...aqiCoords,label:locationLabel.slice(0,200)});
     renderEnvironmentSummary(reading);
     weatherContext={kind:source==='manualdata'?'manual':isHistorical?(targetDateTime.getTime()>Date.now()?'forecast':'historical'):'live',source,time:reading.time,fetched:refreshedAt};
-    hourlyOutlook=reading.outlook||[];outlookZone=reading.timezone||'';
+    hourlyOutlook=reading.outlook||[];outlookZone=reading.timezone||'';outlookLocation=locationLabel;
     if(!hourlyOutlook.length)resetOutlook('Hourly planning is available for live location readings only.');
     else renderTimeline();
     updateFreshness();
@@ -3010,9 +3045,81 @@ function buildAltitudeCheck() {
 }
 buildAltitudeCheck();
 
+// ================== Information window ==================
+const DOC_MODALS = new Set(['actionsModal', 'detailedModal', 'heatIndexModal', 'coldIndexModal', 'aqiScaleModal', 'uvScaleModal', 'altitudeModal', 'altitudeCheckModal', 'referencesModal']);
+const VIEWER = /(^|[#&])view=/.test(location.hash);
+let viewerCurrent = null;
+const jsonDates = function (k, v) { const raw = this[k]; return raw instanceof Date ? { __d: raw.getTime() } : v; };
+const reviveDates = (k, v) => (v && typeof v === 'object' && Object.keys(v).length === 1 && '__d' in v) ? new Date(v.__d) : v;
+
+// What the information window needs to show the same readings as the dashboard at the moment of the click.
+function envSnapshot() {
+  return { v: 1, at: Date.now(), chartMode: document.getElementById('chartMode').value, reading: latestDashboardReading, label: latestDashboardLabel, ctx: weatherContext,
+    aqi: currentAQI, aqiSource: currentAQISource, outlook: hourlyOutlook, hourlyAQI, zone: outlookZone, location: outlookLocation, updated: document.getElementById('lastUpdated').textContent };
+}
+function openViewerWindow(id) {
+  const sid = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  try { localStorage.setItem('envishield.snap.' + sid, JSON.stringify(envSnapshot(), jsonDates)); } catch (e) { /* storage unavailable: the window opens without readings */ }
+  const w = Math.min(1040, screen.availWidth - 80), h = Math.min(860, screen.availHeight - 80);
+  const features = `popup=yes,width=${w},height=${h},left=${Math.max(0, Math.round((screen.availWidth - w) / 2))},top=${Math.max(0, Math.round((screen.availHeight - h) / 2))},resizable=yes,scrollbars=yes`;
+  let win = null;
+  try { win = window.open(location.href.split('#')[0] + '#view=' + id + '&sid=' + sid, 'envishield-info', features); } catch (e) { win = null; }
+  if (!win || win.closed) { try { localStorage.removeItem('envishield.snap.' + sid); } catch (e) {} return false; }
+  try { win.focus(); } catch (e) {}
+  return true;
+}
+function viewerParams() { const p = new URLSearchParams(location.hash.slice(1)); return { id: p.get('view'), sid: p.get('sid') || '' }; }
+function viewerLoadSnapshot(sid) {
+  let snap = null;
+  try { const own = JSON.parse(sessionStorage.getItem('envishield.viewSnap') || 'null', reviveDates); if (own && own.sid === sid) snap = own.snap; } catch (e) {}
+  if (!snap && sid) {
+    try {
+      const raw = localStorage.getItem('envishield.snap.' + sid);
+      if (raw) { snap = JSON.parse(raw, reviveDates); sessionStorage.setItem('envishield.viewSnap', JSON.stringify({ sid, snap }, jsonDates)); localStorage.removeItem('envishield.snap.' + sid); }
+    } catch (e) {}
+  }
+  return snap;
+}
+function viewerApply(snap) {
+  const note = document.getElementById('viewerNote');
+  if (!snap) {
+    latestDashboardReading = null; weatherContext = null; currentAQI = null;
+    document.getElementById('statusBar').style.display = 'none';
+    note.textContent = 'Open this window from the dashboard to see the current readings here. The study material below is still available.'; return;
+  }
+  document.getElementById('statusBar').style.display = '';
+  note.textContent = 'Readings are as they were when this window was opened; use the dashboard window to refresh.';
+  latestDashboardReading = snap.reading || null; latestDashboardLabel = snap.label || ''; weatherContext = snap.ctx || null;
+  hourlyOutlook = snap.outlook || []; hourlyAQI = snap.hourlyAQI || []; outlookZone = snap.zone || ''; outlookLocation = snap.location || '';
+  document.getElementById('chartMode').value = snap.chartMode || 'auto';
+  document.getElementById('lastUpdated').textContent = snap.updated || '—';
+  if (latestDashboardReading) { renderEnvironmentSummary(latestDashboardReading); renderLiveDashboard(); } else if (latestDashboardLabel) setStatus(latestDashboardLabel, false);
+  renderAQI(snap.aqi || null, snap.aqiSource || 'modelled');
+  updateFreshness();
+}
+function viewerShow(id) {
+  const host = document.getElementById('viewerContent');
+  if (viewerCurrent && viewerCurrent.id !== id) { document.getElementById(viewerCurrent.id).append(viewerCurrent.box); viewerCurrent = null; }
+  if (!viewerCurrent) { const box = document.getElementById(id).querySelector('.modal-box'); host.replaceChildren(box); viewerCurrent = { id, box }; }
+  const t = viewerCurrent.box.querySelector('h2'); document.title = (t ? t.textContent : 'EnviShield') + ' — EnviShield';
+  history.replaceState(null, '', '#view=' + id + '&sid=' + viewerParams().sid);
+  viewerCurrent.box.setAttribute('tabindex', '-1'); viewerCurrent.box.focus({ preventScroll: true });
+}
+function viewerOpen(id) {
+  if (!DOC_MODALS.has(id)) id = 'detailedModal';
+  if (id === 'actionsModal') openRecommendedActions(); else if (id === 'detailedModal') openDetailedAdvisory(); else viewerShow(id);
+}
+function startViewer() {
+  document.body.classList.add('viewer');
+  renderColdQuickRef();
+  const load = () => { const p = viewerParams(); viewerApply(viewerLoadSnapshot(p.sid)); viewerOpen(p.id); };
+  load(); window.addEventListener('hashchange', load);
+}
+
 // ================== Init ==================
 setInterval(updateFreshness,60000);
 initLanguage();
+if (VIEWER) startViewer(); else {
 (function initHistoricalDefaults() {
   const now = new Date();
   document.getElementById('histDate').value = isoDateStr(now);
@@ -3022,6 +3129,7 @@ onSourceChange();
 renderColdQuickRef();
 renderPlot(loadHistory());
 fetchAndPlot();
+}
 </script>
 </body>
 </html>
