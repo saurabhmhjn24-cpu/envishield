@@ -715,6 +715,10 @@ body.viewer #statusBar{position:sticky;top:0;z-index:30;box-shadow:0 8px 18px rg
 .viewer-mini .mini-chip{padding:3px 9px;border-radius:999px;font-weight:700;font-size:12px;white-space:nowrap}
 @media print{.viewer-mini{display:none!important}}
 </style>
+<style id="v18-style">
+.modal-box p.ac-note,.info-content p.ac-note,.ac-note{margin:4px 0 0;text-indent:0;text-align:left;font-size:12px}
+.ac-note:empty{display:none}
+</style>
 </head>
 <body>
 <div class="wrap"><header class="app-header"><div class="brand"><svg class="brand-mark" aria-hidden="true" focusable="false" viewBox="0 0 120 140">
@@ -907,6 +911,7 @@ Object.assign(HINDI,{"Forecast location": "पूर्वानुमान क
 Object.assign(HINDI,{"Study material": "अध्ययन सामग्री"});
 Object.assign(HINDI,{"Weather stations": "मौसम केंद्र", "Choose a weather station": "मौसम केंद्र चुनें", "Manual entry of environmental data": "पर्यावरणीय आँकड़ों की मैन्युअल प्रविष्टि", "Temperature (°C)": "तापमान (°C)", "Humidity (%)": "आर्द्रता (%)", "Wind speed (km/h)": "हवा की गति (किमी/घंटा)", "AQI (0–500)": "AQI (0–500)", "Snow on the ground (cm)": "ज़मीन पर बर्फ (सेमी)", "Altitude (m)": "ऊँचाई (मीटर)", "Visibility (km)": "दृश्यता (किमी)", "Snowfall now": "अभी बर्फबारी", "No snowfall": "बर्फबारी नहीं", "Light snowfall": "हल्की बर्फबारी", "Heavy snowfall": "भारी बर्फबारी", "optional": "वैकल्पिक", "No manual values entered. Add any available value; a temperature is needed to calculate heat or cold stress.": "कोई मैन्युअल मान दर्ज नहीं किया गया। कोई भी उपलब्ध मान जोड़ें; गर्मी या ठंड के तनाव की गणना के लिए तापमान आवश्यक है।", "Not available for manual entries": "मैन्युअल प्रविष्टि के लिए उपलब्ध नहीं", "Manually entered environmental data": "मैन्युअल रूप से दर्ज पर्यावरणीय आँकड़े", "UV Index must be between 0 and 20.": "UV सूचकांक 0 से 20 के बीच होना चाहिए।", "Snow depth must be between 0 and 1,000 cm.": "बर्फ की गहराई 0 से 1,000 सेमी के बीच होनी चाहिए।", "Altitude must be between −500 and 9,000 m.": "ऊँचाई −500 से 9,000 मीटर के बीच होनी चाहिए।", "Visibility must be between 0 and 100 km.": "दृश्यता 0 से 100 किमी के बीच होनी चाहिए।", "Heat chart: enter temperature and relative humidity if available. Wind speed is optional and is not used in the heat calculation. UV, AQI, snow, altitude and visibility are optional and add to the advice.": "गर्मी चार्ट: उपलब्ध हो तो तापमान और सापेक्ष आर्द्रता दर्ज करें। हवा की गति वैकल्पिक है और गर्मी की गणना में उपयोग नहीं होती। UV, AQI, बर्फ, ऊँचाई और दृश्यता वैकल्पिक हैं और सलाह को और उपयोगी बनाते हैं।", "Wind chill chart: enter temperature and wind speed if available. Humidity is optional and is not used. If wind is left blank, air temperature is used without a wind-chill correction. UV, AQI, snow, altitude and visibility are optional and add to the advice.": "विंड चिल चार्ट: उपलब्ध हो तो तापमान और हवा की गति दर्ज करें। आर्द्रता वैकल्पिक है और उपयोग नहीं होती। हवा की गति खाली छोड़ने पर विंड चिल सुधार के बिना वायु तापमान लिया जाता है। UV, AQI, बर्फ, ऊँचाई और दृश्यता वैकल्पिक हैं और सलाह को और उपयोगी बनाते हैं।", "All fields are optional; enter only what is available. Heat assessment uses temperature + humidity; cold assessment uses temperature + wind. UV, AQI, snow, altitude and visibility add to the indicators and the advice.": "सभी क्षेत्र वैकल्पिक हैं; केवल उपलब्ध मान दर्ज करें। गर्मी के आकलन में तापमान और आर्द्रता तथा ठंड के आकलन में तापमान और हवा की गति का उपयोग होता है। UV, AQI, बर्फ, ऊँचाई और दृश्यता संकेतकों और सलाह में जुड़ते हैं।", "No recent station reading or usable modelled estimate. You can enter an AQI value under Manual entry of environmental data.": "कोई हालिया स्टेशन रीडिंग या उपयोगी मॉडल अनुमान नहीं है। आप “पर्यावरणीय आँकड़ों की मैन्युअल प्रविष्टि” में AQI मान दर्ज कर सकते हैं।", "Obtain an AQI reading (refresh with a location, or enter one under Manual entry of environmental data) to get air-quality advice.": "वायु गुणवत्ता की सलाह के लिए AQI रीडिंग प्राप्त करें (किसी स्थान के साथ अपडेट करें, या “पर्यावरणीय आँकड़ों की मैन्युअल प्रविष्टि” में दर्ज करें)।"});
 Object.assign(HINDI,{"Colour of the edge beside each point": "प्रत्येक बिंदु के बगल की पट्टी का रंग", "Red: act first. The most serious conditions, such as a Danger heat zone, a High to Extreme wind-chill band, UV Index of 8 or more, heavy snowfall, visibility under 1 km or AQI above 200.": "लाल: पहले कार्रवाई करें। सबसे गंभीर स्थितियाँ, जैसे गर्मी का “खतरा” क्षेत्र, विंड चिल की “उच्च” से “चरम” श्रेणी, UV सूचकांक 8 या अधिक, भारी बर्फबारी, 1 किमी से कम दृश्यता या AQI 200 से ऊपर।", "Amber: important. Raised conditions that need precautions, such as a Caution heat zone, a Low or Moderate wind-chill band, UV Index of 3 to 7, snow on the ground or falling, or AQI of 101 to 200.": "एम्बर: महत्वपूर्ण। बढ़ी हुई स्थितियाँ जिनमें सावधानी आवश्यक है, जैसे गर्मी का “सावधानी” क्षेत्र, विंड चिल की “कम” या “मध्यम” श्रेणी, UV सूचकांक 3 से 7, ज़मीन पर या गिरती बर्फ, या AQI 101 से 200।", "No colour: general precaution. Lower-risk conditions, such as a Safe heat zone, a Minimal wind-chill band, snow expected later or AQI up to 100.": "कोई रंग नहीं: सामान्य सावधानी। कम जोखिम वाली स्थितियाँ, जैसे गर्मी का “सुरक्षित” क्षेत्र, विंड चिल की “न्यूनतम” श्रेणी, बाद में बर्फबारी की संभावना या AQI 100 तक।", "Points are listed from most to least urgent.": "बिंदु सबसे अधिक से सबसे कम तत्काल के क्रम में दिए गए हैं।"});
+Object.assign(HINDI,{"Filled in from the Environmental overview. Change it if your altitude is different.": "पर्यावरणीय अवलोकन से भरा गया। आपकी ऊँचाई भिन्न हो तो इसे बदलें।", "Entered by you.": "आपके द्वारा दर्ज।", "The Environmental overview has no altitude for this source; enter it if known.": "इस स्रोत के लिए पर्यावरणीय अवलोकन में ऊँचाई उपलब्ध नहीं है; ज्ञात हो तो दर्ज करें।"});
 let uiLanguage='en';
 const translationNodes=new WeakMap();
 const translationAttrs=new WeakMap();
@@ -1163,7 +1168,7 @@ function openInfoModal(id){
   if (DOC_MODALS.has(id)) { if (VIEWER) { viewerShow(id); return; } if (openViewerWindow(id)) return; }
   openInfoModalInPage(id);
 }
-function openInfoModalInPage(id){infoReturnFocus=document.activeElement;const el=document.getElementById(id);el.classList.remove('hidden');document.body.style.overflow='hidden';el.querySelector('.modal-close').focus();}
+function openInfoModalInPage(id){if(id==='altitudeCheckModal')acSyncAltitude();infoReturnFocus=document.activeElement;const el=document.getElementById(id);el.classList.remove('hidden');document.body.style.overflow='hidden';el.querySelector('.modal-close').focus();}
 function closeInfoModal(id){if(DOC_MODALS.has(id)&&(VIEWER||document.getElementById(id).classList.contains('hidden')))return;document.getElementById(id).classList.add('hidden');document.body.style.overflow='';infoReturnFocus?.focus();}
 for(const id of ['referencesModal','altitudeModal','actionsModal','heatIndexModal','coldIndexModal','aqiScaleModal','uvScaleModal','detailedModal','dataSourcesModal','altitudeCheckModal']) document.getElementById(id).addEventListener('click',e=>{if(e.target.id===id)closeInfoModal(id);});
 document.addEventListener('keydown',e=>{
@@ -2520,8 +2525,7 @@ function applyModeUI(mode) {
   const triangle = '<div class="key-note">A yellow triangle marks a reading outside the chart limits; it is drawn at the nearest edge.</div>';
   if (cold) {
     desc.innerHTML = '<div style="margin-bottom:4px;"><strong>Feels-like (wind chill) risk bands</strong></div>' +
-      COLD_BANDS.map(b => `<span class="zone-chip" style="background:${b.color}; color:${b.textColor};">${b.name}: ${b.range}</span>`).join('') +
-      '<div class="key-note">Wind chill is calculated only above 4.8 km/h and at or below 10 °C; otherwise the air temperature is used. If wind is not entered, only the air-temperature minimum is shown (open marker with “?”). Environment Canada’s chart covers winds up to 80 km/h; beyond that, values are extrapolated. In sustained winds above 50 km/h, frostbite can occur faster than the times shown.</div>' + triangle;
+      COLD_BANDS.map(b => `<span class="zone-chip" style="background:${b.color}; color:${b.textColor};">${b.name}: ${b.range}</span>`).join('') + triangle;
   } else {
     desc.innerHTML = '<strong>Green = Safe &nbsp;&nbsp; | &nbsp;&nbsp; Yellow = Caution &nbsp;&nbsp; | &nbsp;&nbsp; Red = Danger</strong>' + triangle;
   }
@@ -2938,7 +2942,7 @@ function acState() {
   const scores = {}; for (const k of ['h', 'g', 'f', 'd']) { const v = val('ac-' + k); scores[k] = v === null ? null : parseInt(v, 10); }
   return { ascent: val('ac-ascent'), scores, mental: body.querySelector('#ac-mental').checked, ataxia: body.querySelector('#ac-ataxia').checked,
     hapeSym: [0, 1, 2, 3].map(i => body.querySelector('#ac-sym' + i).checked), hapeSign: [0, 1, 2, 3].map(i => body.querySelector('#ac-sign' + i).checked),
-    altitude: body.querySelector('#ac-alt').value };
+    altitude: body.querySelector('#ac-alt').value, altitudeAuto: body.querySelector('#ac-alt').dataset.auto === '1' };
 }
 
 function acRows(a) {
@@ -2969,7 +2973,7 @@ function acSummaryText() {
   const amsTxt = !a.recent ? 'not assessed (no recent ascent)' : a.ams ? `AMS present, ${a.band}` : 'AMS not present';
   const flag = v => v === 'criteria' ? 'criteria met' : v === 'possible' ? 'possible features' : 'not suggested';
   return [`Altitude self-check (EnviShield) — ${formatStamp(now)}`,
-    `Altitude now: ${st.altitude ? st.altitude + ' m' : 'not given'}`,
+    `Altitude now: ${st.altitude ? st.altitude + ' m' + (st.altitudeAuto ? ' (from the Environmental overview)' : '') : 'not given'}`,
     `Recent gain in altitude: ${st.ascent || 'not answered'}`,
     `Lake Louise AMS score (2018): ${a.total}/12 (headache ${a.scores[0]}, gastrointestinal ${a.scores[1]}, fatigue ${a.scores[2]}, dizziness ${a.scores[3]}) — ${amsTxt}`,
     `HACE flags: confusion/behaviour ${yn(a.mental)}; loss of balance/coordination ${yn(a.ataxia)} — ${flag(a.hace)}`,
@@ -2985,7 +2989,25 @@ async function acCopy() {
 function acReset() {
   const body = document.getElementById('altitudeCheckBody');
   body.querySelectorAll('input[type=radio],input[type=checkbox]').forEach(i => { i.checked = false; });
-  body.querySelector('#ac-alt').value = ''; document.getElementById('acCopyNote').textContent = ''; renderAltitudeResult();
+  { const alt = body.querySelector('#ac-alt'); alt.value = ''; alt.dataset.auto = '0'; } acSyncAltitude();
+  document.getElementById('acCopyNote').textContent = ''; renderAltitudeResult();
+}
+
+// The altitude field follows the Environmental overview: it is filled in whenever the self-check opens, unless the user has typed
+// their own value (which is then left alone).
+function acAltitudeNote() {
+  const input = document.getElementById('ac-alt'), note = document.getElementById('acAltNote'); if (!input || !note) return;
+  const r = latestDashboardReading, has = !!r && Number.isFinite(r.elevation_m);
+  note.textContent = input.dataset.auto === '1' ? 'Filled in from the Environmental overview. Change it if your altitude is different.'
+    : input.value !== '' ? 'Entered by you.' : has ? '' : 'The Environmental overview has no altitude for this source; enter it if known.';
+}
+function acSyncAltitude() {
+  const input = document.getElementById('ac-alt'); if (!input) return;
+  const r = latestDashboardReading, m = r && Number.isFinite(r.elevation_m) ? Math.round(r.elevation_m) : null;
+  if (input.dataset.auto === '1' || input.value === '') {
+    if (m !== null) { input.value = String(m); input.dataset.auto = '1'; } else { input.value = ''; input.dataset.auto = '0'; }
+  }
+  acAltitudeNote();
 }
 
 function buildAltitudeCheck() {
@@ -2995,7 +3017,7 @@ function buildAltitudeCheck() {
   body.innerHTML =
     `<p class="info-lede">${AC_LEDE}</p><div class="advisory-emergency">${AC_WARN}</div>` +
     `<fieldset class="ac-set"><legend>${S.step1}</legend><p>${S.q1}</p>${radio('ac-ascent', 'yes', S.yes)}${radio('ac-ascent', 'no', S.no)}` +
-    `<label class="ac-field"><span>${S.alt}</span><input type="number" id="ac-alt" inputmode="numeric" min="0" max="9000" placeholder="3500"></label></fieldset>` +
+    `<label class="ac-field"><span>${S.alt}</span><input type="number" id="ac-alt" inputmode="numeric" min="-500" max="9000" placeholder="3500"></label><p class="hint ac-note" id="acAltNote"></p></fieldset>` +
     `<fieldset class="ac-set"><legend>${S.step2}</legend><p>${S.q2}</p>` +
     AC_SYMPTOMS.map(q => `<fieldset class="ac-q"><legend>${q.name}</legend>${q.opts.map((o, i) => radio('ac-' + q.key, i, o, i)).join('')}</fieldset>`).join('') + '</fieldset>' +
     `<fieldset class="ac-set"><legend>${S.step3}</legend><h4>${S.hace}</h4>${check('ac-mental', S.mental)}${check('ac-ataxia', S.ataxia)}` +
@@ -3005,6 +3027,7 @@ function buildAltitudeCheck() {
     `<div class="ac-actions"><button type="button" class="secondary" onclick="acCopy()">${S.copy}</button><button type="button" class="secondary" onclick="acReset()">${S.reset}</button>` +
     `<button type="button" class="secondary" onclick="closeInfoModal('altitudeCheckModal');openInfoModal('altitudeModal')">High-altitude guidance</button></div><p class="hint" id="acCopyNote" role="status"></p>`;
   body.addEventListener('change', renderAltitudeResult);
+  body.querySelector('#ac-alt').addEventListener('input', e => { e.target.dataset.auto = '0'; acAltitudeNote(); });
   renderAltitudeResult();
 }
 buildAltitudeCheck();
@@ -3062,6 +3085,7 @@ function viewerApply(snap) {
   updateFreshness();
 }
 function viewerShow(id) {
+  if (id === 'altitudeCheckModal') acSyncAltitude();
   const host = document.getElementById('viewerContent');
   if (viewerCurrent && viewerCurrent.id !== id) { document.getElementById(viewerCurrent.id).append(viewerCurrent.box); viewerCurrent = null; }
   if (!viewerCurrent) { const box = document.getElementById(id).querySelector('.modal-box'); host.replaceChildren(box); viewerCurrent = { id, box }; }
