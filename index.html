@@ -689,6 +689,32 @@ body.viewer #viewerContent .modal-box:focus{outline:none}
 .manual-grid input,.manual-grid select{width:100%;min-width:0}
 #stationFields label{display:block;margin:2px 0 4px;font-size:13px;font-weight:600}
 </style>
+<style id="v16-style">
+/* colour key for Recommended actions */
+.action-legend{margin:10px 0 6px;padding:10px 12px;background:#f7fafb;border:1px solid #dbe5e8;border-radius:10px;font-size:12.5px}
+.action-legend p{text-indent:0;text-align:left;margin:0}
+.action-legend .legend-title{margin-bottom:6px;font-weight:700;color:#14303b}
+.legend-row{display:flex;gap:10px;align-items:flex-start;margin:6px 0;line-height:1.4}
+.legend-row>span:last-child{flex:1;text-align:left}
+.legend-bar{flex:none;width:3px;align-self:stretch;min-height:18px;border-radius:2px}
+.legend-bar.p3{background:#d9342b}
+.legend-bar.p2{background:#f5a623}
+.legend-bar.p1{background:transparent;border:1px dashed #9aa7ad;width:1px}
+.action-legend .legend-order{margin-top:6px;color:#4a6470}
+/* frozen overview in the information window */
+.viewer-mini{display:none}
+body.viewer #statusBar{position:sticky;top:0;z-index:30;box-shadow:0 8px 18px rgba(20,48,59,.16)}
+@media (max-width:760px),(max-height:640px){
+ body.viewer #statusBar{position:static;box-shadow:0 5px 24px #193b4610}
+ body.viewer #viewerMini{position:sticky;top:0;z-index:30;align-items:center;gap:6px 8px;flex-wrap:wrap;padding:8px 10px;margin-bottom:8px;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 6px 16px rgba(20,48,59,.16);font-size:13px}
+ body.viewer.viewer-scrolled #viewerMini:not(:empty){display:flex}
+}
+.viewer-mini .mini-main{display:inline-flex;align-items:baseline;gap:8px;margin-right:4px}
+.viewer-mini .mini-main strong{font-size:16px}
+.viewer-mini .mini-sub{color:#4a6470;font-size:12px}
+.viewer-mini .mini-chip{padding:3px 9px;border-radius:999px;font-weight:700;font-size:12px;white-space:nowrap}
+@media print{.viewer-mini{display:none!important}}
+</style>
 </head>
 <body>
 <div class="wrap"><header class="app-header"><div class="brand"><svg class="brand-mark" aria-hidden="true" focusable="false" viewBox="0 0 120 140">
@@ -766,6 +792,7 @@ body.viewer #viewerContent .modal-box:focus{outline:none}
 <button class="secondary" onclick="window.print()">Print / Save PDF</button>
 <button class="tertiary" onclick="clearHistory()">Clear Today's Points</button>
 </div><p class="hint" id="requestDetail" role="status"></p></details>
+<div class="viewer-mini" id="viewerMini" aria-hidden="true"></div>
 <div class="status-bar" id="statusBar">
 <div class="status-main">
 <h2 class="overview-title" id="overviewTitle">Environmental overview</h2>
@@ -879,6 +906,7 @@ Object.assign(HINDI,{"Snowfall, snow depth and weather codes come from the Open-
 Object.assign(HINDI,{"Forecast location": "पूर्वानुमान का स्थान", "Readings are as they were when this window was opened; use the dashboard window to refresh.": "रीडिंग वही हैं जो इस विंडो को खोलते समय थीं; ताज़ा करने के लिए डैशबोर्ड विंडो का उपयोग करें।", "Open this window from the dashboard to see the current readings here. The study material below is still available.": "वर्तमान रीडिंग यहाँ देखने के लिए इस विंडो को डैशबोर्ड से खोलें। नीचे दी गई अध्ययन सामग्री फिर भी उपलब्ध है।", "Close window": "विंडो बंद करें"});
 Object.assign(HINDI,{"Study material": "अध्ययन सामग्री"});
 Object.assign(HINDI,{"Weather stations": "मौसम केंद्र", "Choose a weather station": "मौसम केंद्र चुनें", "Manual entry of environmental data": "पर्यावरणीय आँकड़ों की मैन्युअल प्रविष्टि", "Temperature (°C)": "तापमान (°C)", "Humidity (%)": "आर्द्रता (%)", "Wind speed (km/h)": "हवा की गति (किमी/घंटा)", "AQI (0–500)": "AQI (0–500)", "Snow on the ground (cm)": "ज़मीन पर बर्फ (सेमी)", "Altitude (m)": "ऊँचाई (मीटर)", "Visibility (km)": "दृश्यता (किमी)", "Snowfall now": "अभी बर्फबारी", "No snowfall": "बर्फबारी नहीं", "Light snowfall": "हल्की बर्फबारी", "Heavy snowfall": "भारी बर्फबारी", "optional": "वैकल्पिक", "No manual values entered. Add any available value; a temperature is needed to calculate heat or cold stress.": "कोई मैन्युअल मान दर्ज नहीं किया गया। कोई भी उपलब्ध मान जोड़ें; गर्मी या ठंड के तनाव की गणना के लिए तापमान आवश्यक है।", "Not available for manual entries": "मैन्युअल प्रविष्टि के लिए उपलब्ध नहीं", "Manually entered environmental data": "मैन्युअल रूप से दर्ज पर्यावरणीय आँकड़े", "UV Index must be between 0 and 20.": "UV सूचकांक 0 से 20 के बीच होना चाहिए।", "Snow depth must be between 0 and 1,000 cm.": "बर्फ की गहराई 0 से 1,000 सेमी के बीच होनी चाहिए।", "Altitude must be between −500 and 9,000 m.": "ऊँचाई −500 से 9,000 मीटर के बीच होनी चाहिए।", "Visibility must be between 0 and 100 km.": "दृश्यता 0 से 100 किमी के बीच होनी चाहिए।", "Heat chart: enter temperature and relative humidity if available. Wind speed is optional and is not used in the heat calculation. UV, AQI, snow, altitude and visibility are optional and add to the advice.": "गर्मी चार्ट: उपलब्ध हो तो तापमान और सापेक्ष आर्द्रता दर्ज करें। हवा की गति वैकल्पिक है और गर्मी की गणना में उपयोग नहीं होती। UV, AQI, बर्फ, ऊँचाई और दृश्यता वैकल्पिक हैं और सलाह को और उपयोगी बनाते हैं।", "Wind chill chart: enter temperature and wind speed if available. Humidity is optional and is not used. If wind is left blank, air temperature is used without a wind-chill correction. UV, AQI, snow, altitude and visibility are optional and add to the advice.": "विंड चिल चार्ट: उपलब्ध हो तो तापमान और हवा की गति दर्ज करें। आर्द्रता वैकल्पिक है और उपयोग नहीं होती। हवा की गति खाली छोड़ने पर विंड चिल सुधार के बिना वायु तापमान लिया जाता है। UV, AQI, बर्फ, ऊँचाई और दृश्यता वैकल्पिक हैं और सलाह को और उपयोगी बनाते हैं।", "All fields are optional; enter only what is available. Heat assessment uses temperature + humidity; cold assessment uses temperature + wind. UV, AQI, snow, altitude and visibility add to the indicators and the advice.": "सभी क्षेत्र वैकल्पिक हैं; केवल उपलब्ध मान दर्ज करें। गर्मी के आकलन में तापमान और आर्द्रता तथा ठंड के आकलन में तापमान और हवा की गति का उपयोग होता है। UV, AQI, बर्फ, ऊँचाई और दृश्यता संकेतकों और सलाह में जुड़ते हैं।", "No recent station reading or usable modelled estimate. You can enter an AQI value under Manual entry of environmental data.": "कोई हालिया स्टेशन रीडिंग या उपयोगी मॉडल अनुमान नहीं है। आप “पर्यावरणीय आँकड़ों की मैन्युअल प्रविष्टि” में AQI मान दर्ज कर सकते हैं।", "Obtain an AQI reading (refresh with a location, or enter one under Manual entry of environmental data) to get air-quality advice.": "वायु गुणवत्ता की सलाह के लिए AQI रीडिंग प्राप्त करें (किसी स्थान के साथ अपडेट करें, या “पर्यावरणीय आँकड़ों की मैन्युअल प्रविष्टि” में दर्ज करें)।"});
+Object.assign(HINDI,{"Colour of the edge beside each point": "प्रत्येक बिंदु के बगल की पट्टी का रंग", "Red: act first. The most serious conditions, such as a Danger heat zone, a High to Extreme wind-chill band, UV Index of 8 or more, heavy snowfall, visibility under 1 km or AQI above 200.": "लाल: पहले कार्रवाई करें। सबसे गंभीर स्थितियाँ, जैसे गर्मी का “खतरा” क्षेत्र, विंड चिल की “उच्च” से “चरम” श्रेणी, UV सूचकांक 8 या अधिक, भारी बर्फबारी, 1 किमी से कम दृश्यता या AQI 200 से ऊपर।", "Amber: important. Raised conditions that need precautions, such as a Caution heat zone, a Low or Moderate wind-chill band, UV Index of 3 to 7, snow on the ground or falling, or AQI of 101 to 200.": "एम्बर: महत्वपूर्ण। बढ़ी हुई स्थितियाँ जिनमें सावधानी आवश्यक है, जैसे गर्मी का “सावधानी” क्षेत्र, विंड चिल की “कम” या “मध्यम” श्रेणी, UV सूचकांक 3 से 7, ज़मीन पर या गिरती बर्फ, या AQI 101 से 200।", "No colour: general precaution. Lower-risk conditions, such as a Safe heat zone, a Minimal wind-chill band, snow expected later or AQI up to 100.": "कोई रंग नहीं: सामान्य सावधानी। कम जोखिम वाली स्थितियाँ, जैसे गर्मी का “सुरक्षित” क्षेत्र, विंड चिल की “न्यूनतम” श्रेणी, बाद में बर्फबारी की संभावना या AQI 100 तक।", "Points are listed from most to least urgent.": "बिंदु सबसे अधिक से सबसे कम तत्काल के क्रम में दिए गए हैं।"});
 let uiLanguage='en';
 const translationNodes=new WeakMap();
 const translationAttrs=new WeakMap();
@@ -979,6 +1007,11 @@ function renderActionContent(){
  const body=document.getElementById('recommendedActionsBody');body.replaceChildren();
  const note=document.createElement('p');note.className='hint';note.textContent=weatherContext&&weatherContext.kind!=='live'? 'Advice for the displayed reading. Manual and selected-time data may not describe current conditions.' : 'Actions for the latest displayed weather and AQI. Unknown conditions are not treated as low risk.';body.append(note);
  if(weatherContext?.kind==='live'&&Date.now()-weatherContext.time.getTime()>90*60000){const warning=document.createElement('p');warning.className='advisory-emergency';warning.textContent='Weather reading is more than 90 minutes old. Refresh before planning activity.';body.append(warning);}
+ // Colour key: what the coloured edge beside each point means (the same rules that order the list)
+ const legend=document.createElement('div');legend.className='action-legend';legend.setAttribute('role','group');
+ const lt=document.createElement('p');lt.className='legend-title';lt.textContent="Colour of the edge beside each point";legend.append(lt);
+ for(const [cls,text] of [['p3',"Red: act first. The most serious conditions, such as a Danger heat zone, a High to Extreme wind-chill band, UV Index of 8 or more, heavy snowfall, visibility under 1 km or AQI above 200."],['p2',"Amber: important. Raised conditions that need precautions, such as a Caution heat zone, a Low or Moderate wind-chill band, UV Index of 3 to 7, snow on the ground or falling, or AQI of 101 to 200."],['p1',"No colour: general precaution. Lower-risk conditions, such as a Safe heat zone, a Minimal wind-chill band, snow expected later or AQI up to 100."]]){const row=document.createElement('div');row.className='legend-row';const bar=document.createElement('span');bar.className='legend-bar '+cls;bar.setAttribute('aria-hidden','true');const tx=document.createElement('span');tx.textContent=text;row.append(bar,tx);legend.append(row);}
+ const lo=document.createElement('p');lo.className='legend-order';lo.textContent="Points are listed from most to least urgent.";legend.append(lo);body.append(legend);
  // One numbered list of actions, most urgent first; no headings. Each point carries its urgency as a coloured edge.
  const seen=new Set();const list=document.createElement('ol');list.className='action-points';
  for(const g of actionGroups(latestDashboardReading,currentAQI))for(const t of g.items){if(seen.has(t))continue;seen.add(t);const li=document.createElement('li');li.dataset.priority=g.priority;li.textContent=t;list.append(li);}
@@ -3040,11 +3073,45 @@ function viewerOpen(id) {
   if (!DOC_MODALS.has(id)) id = 'detailedModal';
   if (id === 'actionsModal') openRecommendedActions(); else if (id === 'detailedModal') openDetailedAdvisory(); else viewerShow(id);
 }
+// ----- Frozen overview: the Environmental overview stays in view while the advice scrolls beneath it -----
+// Wide windows pin the whole overview card. On phones and short windows a pinned card would fill the screen, so a compact
+// strip (temperature, feels like and the indicators) is pinned instead once the card has scrolled out of view.
+const FREEZE_COMPACT = '(max-width:760px),(max-height:640px)';
+function viewerBuildMini() {
+  const mini = document.getElementById('viewerMini'); if (!mini) return;
+  mini.replaceChildren();
+  const ms = [...document.querySelectorAll('#liveMetrics .metric')].slice(0, 2);
+  if (ms.length) {
+    const main = document.createElement('span'); main.className = 'mini-main';
+    ms.forEach((m, i) => { const lab = m.querySelector('span')?.textContent || '', val = m.querySelector('strong')?.childNodes[0]?.textContent || ''; const e = document.createElement(i ? 'span' : 'strong'); e.textContent = i ? `${lab} ${val}` : val; if (i) e.className = 'mini-sub'; main.append(e); });
+    mini.append(main);
+  }
+  for (const id of ['stressValue', 'aqiValue', 'uvValue', 'snowNote']) {
+    const src = document.getElementById(id); if (!src || src.classList.contains('hidden') || !src.textContent.trim() || !ms.length) continue;
+    const cs = getComputedStyle(src), c = document.createElement('span'); c.className = 'mini-chip'; c.textContent = src.textContent; c.style.background = cs.backgroundColor; c.style.color = cs.color; mini.append(c);
+  }
+  viewerFreezeMetrics();
+}
+// links inside the window (for example the references contents) must land below the pinned part, not behind it
+function viewerFreezeMetrics() {
+  const compact = matchMedia(FREEZE_COMPACT).matches;
+  const h = compact ? (document.getElementById('viewerMini').getBoundingClientRect().height || 56) : document.getElementById('statusBar').getBoundingClientRect().height;
+  document.documentElement.style.scrollPaddingTop = (Math.ceil(h) + 10) + 'px';
+}
+function startFrozenOverview() {
+  const bar = document.getElementById('statusBar');
+  viewerBuildMini();
+  new MutationObserver(() => { cancelAnimationFrame(window.__miniRaf); window.__miniRaf = requestAnimationFrame(viewerBuildMini); }).observe(bar, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['class', 'style'] });
+  new IntersectionObserver(es => document.body.classList.toggle('viewer-scrolled', !es[0].isIntersecting)).observe(bar);
+  window.addEventListener('resize', viewerFreezeMetrics);
+}
+
 function startViewer() {
   document.body.classList.add('viewer');
   renderColdQuickRef();
   const load = () => { const p = viewerParams(); viewerApply(viewerLoadSnapshot(p.sid)); viewerOpen(p.id); };
   load(); window.addEventListener('hashchange', load);
+  startFrozenOverview();
 }
 
 // ================== Init ==================
