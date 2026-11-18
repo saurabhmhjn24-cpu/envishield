@@ -547,7 +547,9 @@ html[lang="hi"] .options-bar .hamburger-toggle{height:44px;min-height:44px}
 
 /* Keep the readings and their actions within one information card. */
 .status-bar{flex-wrap:wrap}
-.credit-line{margin:18px 0 6px;text-align:center;font-size:12.5px;letter-spacing:.3px;color:var(--muted,#4a6470)}
+.credit-line{margin:22px 0 8px;text-align:center;font-size:15px;font-weight:800;font-style:italic;letter-spacing:.4px;color:#0f5f64}
+html[lang="hi"] .credit-line{letter-spacing:0;font-size:16px}
+@media print{.credit-line{color:#000}}
 .status-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:1 0 100%;width:100%;border-top:1px solid var(--border);padding-top:12px}
 .status-footer .status-actions{margin:0;flex-shrink:0}
 @media(max-width:760px){.status-footer{flex-direction:column;align-items:stretch;gap:10px}.status-footer .status-actions{width:100%}.status-footer .status-actions button{min-height:44px}}
